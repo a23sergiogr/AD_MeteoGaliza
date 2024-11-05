@@ -1,8 +1,7 @@
 package meteogaliza;
 
 import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import javafx.application.Application;
 import meteogaliza.enums.EstadoCeo;
 import meteogaliza.enums.EstadoUtils;
 import meteogaliza.enums.EstadoVento;
@@ -10,50 +9,35 @@ import meteogaliza.enums.VariableMeteoroloxica;
 import meteogaliza.gson.JsonDeserializerPrediccion;
 import meteogaliza.gson.JsonDeserializerPrediccionDia;
 import meteogaliza.gson.JsonDeserializerVariableFranxa;
+import meteogaliza.gson.TypeAdapterPrediccion;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
+
 public class Main {
-    public static void main(String[] args) {
-        Gson gson = new GsonBuilder()
+    public static final String uri = "https://servizos.meteogalicia.gal/mgrss/predicion/jsonPredConcellos.action?idConc=15078&request_locale=gl";
+    public static final Path path1 = Paths.get("src\\main\\resources\\meteogaliza.json");
+    public static final Path path2 = Paths.get("src\\main\\resources\\meteogalizaLista.json");
+
+
+    public static void main(String[] args) throws MalformedURLException {
+        Gson gsonDeserializer = new GsonBuilder()
                 .registerTypeAdapter(Prediccion.class, new JsonDeserializerPrediccion())
                 .registerTypeAdapter(PrediccionDia.class, new JsonDeserializerPrediccionDia())
                 .registerTypeAdapter(VariableFranxa.class, new JsonDeserializerVariableFranxa())
                 .setPrettyPrinting().create();
 
         Gson gsonTypeAdapter = new GsonBuilder()
-                .registerTypeAdapter(Prediccion.class, new TypeAdapter<Prediccion>() {
-                    @Override
-                    public void write(JsonWriter jsonWriter, Prediccion prediccion) throws IOException {
-
-                    }
-
-                    @Override
-                    public Prediccion read(JsonReader jsonReader) throws IOException {
-                        Prediccion prediccion = new Prediccion();
-
-                        jsonReader.beginObject();
-                        while (jsonReader.hasNext()) {
-                            String name = jsonReader.nextName();
-                            if (name.equals("predConcello")){
-                                jsonReader.beginObject();
-                                while (jsonReader.hasNext()){
-                                    switch (jsonReader.nextName()){
-                                        case "idConcello" -> prediccion.setConcello(jsonReader.nextInt());
-                                    }
-                                }
-                                jsonReader.endObject();
-                            }
-                        }
-                        jsonReader.endObject();
-
-                        return prediccion;
-                    }
-                })
+                .registerTypeAdapter(Prediccion.class, new TypeAdapterPrediccion())
                 .setPrettyPrinting().create();
 
         Prediccion prediccion = new Prediccion();
@@ -80,19 +64,28 @@ public class Main {
                         .setValorTarde(EstadoVento.VENTO_FORTE_NOROESTE)
                         .setValorNoche(EstadoVento.VENTO_FROUXO_NOROESTE));
 
-        prediccion.addPrediccionDia(prediccionDia);
+//        prediccion.addPrediccionDia(prediccionDia);
+//
+//        System.out.println(prediccion);
 
-        System.out.println(prediccion);
-
-        Path path1 = Paths.get("src\\main\\resources\\meteogaliza.json");
-        Path path2 = Paths.get("src\\main\\resources\\meteogalizaLista.json");
-        Prediccion prediccion1;
+        Prediccion prediccionBR;
         try(var br = Files.newBufferedReader(path2)){
-            prediccion1 = gson.fromJson(br, Prediccion.class);
+            prediccionBR = gsonTypeAdapter.fromJson(br, Prediccion.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println(prediccion1);
+        System.out.println(prediccionBR);
+
+
+//        Prediccion prediccionURI;
+//        try (var is = new BufferedReader(new InputStreamReader(new URI(uri).toURL().openConnection().getInputStream()))) {
+//            prediccionURI = gsonTypeAdapter.fromJson(is, Prediccion.class);
+//        } catch (IOException | URISyntaxException e) {
+//            throw new RuntimeException(e);
+//        }
+//        System.out.println(prediccionURI);
+
+        Ventana ventana = new Ventana();
     }
 }

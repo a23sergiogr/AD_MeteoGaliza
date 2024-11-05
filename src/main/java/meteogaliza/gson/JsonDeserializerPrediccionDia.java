@@ -20,56 +20,43 @@ public class JsonDeserializerPrediccionDia implements JsonDeserializer<Prediccio
         setIntValueIfPresent(jsonObject, "tMin", prediccionDia::settMin, "Non hai tMin");
         setIntValueIfPresent(jsonObject, "uvMax", prediccionDia::setUvMaz, "Non hai uvMax");
 
-
-        prediccionDia.setDataPredicion(LocalDateTime.parse(jsonObject.get("dataPredicion").getAsString()));
-
         try{
-            VariableFranxa ceo = jsonDeserializationContext.deserialize(jsonObject.get("ceo"), VariableFranxa.class);
-            ceo.setVariableMeteoroloxica(VariableMeteoroloxica.CIELO);
-            prediccionDia.addListaVariableFranxa(ceo);
+            if (jsonObject.has("dataPredicion") && !jsonObject.get("dataPredicion").isJsonNull())
+                prediccionDia.setDataPredicion(LocalDateTime.parse(jsonObject.get("dataPredicion").getAsString()));
         } catch (Exception e){
-            System.err.println("Non hai ceo");
+            System.err.println("Non hai dataPredicion");
         }
 
-        try{
-            VariableFranxa pchoiva = jsonDeserializationContext.deserialize(jsonObject.get("pchoiva"), VariableFranxa.class);
-            pchoiva.setVariableMeteoroloxica(VariableMeteoroloxica.LLUVIA);
-            prediccionDia.addListaVariableFranxa(pchoiva);
-        } catch (Exception e){
-            System.err.println("Non hai pchoiva");
-        }
-
-        try{
-            VariableFranxa tmaxFranxa = jsonDeserializationContext.deserialize(jsonObject.get("tmaxFranxa"), VariableFranxa.class);
-            tmaxFranxa.setVariableMeteoroloxica(VariableMeteoroloxica.TEMPERATURA_MAXIMA);
-            prediccionDia.addListaVariableFranxa(tmaxFranxa);
-        } catch (Exception e){
-            System.err.println("Non hai tmaxFranxa");
-        }
-
-        try{
-            VariableFranxa tminFranxa = jsonDeserializationContext.deserialize(jsonObject.get("tminFranxa"), VariableFranxa.class);
-            tminFranxa.setVariableMeteoroloxica(VariableMeteoroloxica.TEMPERATURA_MINIMA);
-            prediccionDia.addListaVariableFranxa(tminFranxa);
-        } catch (Exception e){
-            System.err.println("Non hai tminFranxa");
-        }
-
-        try{
-            VariableFranxa vento = jsonDeserializationContext.deserialize(jsonObject.get("vento"), VariableFranxa.class);
-            vento.setVariableMeteoroloxica(VariableMeteoroloxica.VIENTO);
-            prediccionDia.addListaVariableFranxa(vento);
-        } catch (Exception e){
-            System.err.println("Non hai vento");
-        }
+        setVariableFranxaValueIfPresent(jsonObject, jsonDeserializationContext, "ceo", VariableMeteoroloxica.CIELO, prediccionDia::addListaVariableFranxa, "Non hai Ceo");
+        setVariableFranxaValueIfPresent(jsonObject, jsonDeserializationContext, "pchoiva", VariableMeteoroloxica.LLUVIA, prediccionDia::addListaVariableFranxa, "Non hai pchoiva");
+        setVariableFranxaValueIfPresent(jsonObject, jsonDeserializationContext, "tmaxFranxa", VariableMeteoroloxica.TEMPERATURA_MAXIMA, prediccionDia::addListaVariableFranxa, "Non hai tmaxFranxa");
+        setVariableFranxaValueIfPresent(jsonObject, jsonDeserializationContext, "tminFranxa", VariableMeteoroloxica.TEMPERATURA_MINIMA, prediccionDia::addListaVariableFranxa, "Non hai tminFranxa");
+        setVariableFranxaValueIfPresent(jsonObject, jsonDeserializationContext, "vento", VariableMeteoroloxica.VIENTO, prediccionDia::addListaVariableFranxa, "Non hai vento");
 
         return prediccionDia;
     }
 
     private void setIntValueIfPresent(JsonObject jsonObject, String key, Consumer<Integer> setter, String errorMessage) {
         try {
+            if (jsonObject.has(key)) {
+                if (jsonObject.get(key).isJsonNull()){
+                    setter.accept(-9999);
+                }
+                else{
+                    setter.accept(jsonObject.get(key).getAsInt());
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(errorMessage);
+        }
+    }
+
+    private void setVariableFranxaValueIfPresent(JsonObject jsonObject, JsonDeserializationContext jsonDeserializationContext, String key, VariableMeteoroloxica type, Consumer<VariableFranxa> setter, String errorMessage) {
+        try {
             if (jsonObject.has(key) && !jsonObject.get(key).isJsonNull()) {
-                setter.accept(jsonObject.get(key).getAsInt());
+                VariableFranxa variableFranxa = jsonDeserializationContext.deserialize(jsonObject.get(key), VariableFranxa.class);
+                variableFranxa.setVariableMeteoroloxica(type);
+               setter.accept(variableFranxa);
             }
         } catch (Exception e) {
             System.err.println(errorMessage);
