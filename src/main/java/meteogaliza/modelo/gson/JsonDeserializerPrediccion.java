@@ -1,8 +1,8 @@
-package meteogaliza.gson;
+package meteogaliza.modelo.gson;
 
 import com.google.gson.*;
-import meteogaliza.Prediccion;
-import meteogaliza.PrediccionDia;
+import meteogaliza.modelo.objetos.Prediccion;
+import meteogaliza.modelo.objetos.PrediccionDia;
 
 import java.lang.reflect.Type;
 

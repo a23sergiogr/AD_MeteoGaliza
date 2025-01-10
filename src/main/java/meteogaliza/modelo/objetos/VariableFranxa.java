@@ -1,7 +1,7 @@
-package meteogaliza;
+package meteogaliza.modelo.objetos;
 
-import meteogaliza.enums.EstadoUtils;
-import meteogaliza.enums.VariableMeteoroloxica;
+import meteogaliza.modelo.enums.EstadoUtils;
+import meteogaliza.modelo.enums.VariableMeteoroloxica;
 
 public class VariableFranxa {
     private VariableMeteoroloxica variableMeteoroloxica;

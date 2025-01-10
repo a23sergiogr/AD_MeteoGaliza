@@ -1,4 +1,5 @@
-package meteogaliza.enums;
+package meteogaliza.modelo.enums;
+
 
 // Clase anidada para valores entre 0 y 100
 class EstadoArbitrario implements EstadoUtils {

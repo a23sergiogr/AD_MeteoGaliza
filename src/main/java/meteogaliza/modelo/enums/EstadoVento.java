@@ -1,4 +1,4 @@
-package meteogaliza.enums;
+package meteogaliza.modelo.enums;
 
 public enum EstadoVento implements EstadoUtils{
     CALMA(299, "Calma"),

@@ -1,9 +1,9 @@
-package meteogaliza.gson;
+package meteogaliza.modelo.gson;
 
 import com.google.gson.*;
-import meteogaliza.PrediccionDia;
-import meteogaliza.VariableFranxa;
-import meteogaliza.enums.VariableMeteoroloxica;
+import meteogaliza.modelo.objetos.PrediccionDia;
+import meteogaliza.modelo.objetos.VariableFranxa;
+import meteogaliza.modelo.enums.VariableMeteoroloxica;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
@@ -20,10 +20,10 @@ public class JsonDeserializerPrediccionDia implements JsonDeserializer<Prediccio
         setIntValueIfPresent(jsonObject, "tMin", prediccionDia::settMin, "Non hai tMin");
         setIntValueIfPresent(jsonObject, "uvMax", prediccionDia::setUvMaz, "Non hai uvMax");
 
-        try{
+        try {
             if (jsonObject.has("dataPredicion") && !jsonObject.get("dataPredicion").isJsonNull())
                 prediccionDia.setDataPredicion(LocalDateTime.parse(jsonObject.get("dataPredicion").getAsString()));
-        } catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Non hai dataPredicion");
         }
 
@@ -38,14 +38,12 @@ public class JsonDeserializerPrediccionDia implements JsonDeserializer<Prediccio
 
     private void setIntValueIfPresent(JsonObject jsonObject, String key, Consumer<Integer> setter, String errorMessage) {
         try {
-            if (jsonObject.has(key)) {
-                if (jsonObject.get(key).isJsonNull()){
+            if (jsonObject.has(key))
+                if (jsonObject.get(key).isJsonNull())
                     setter.accept(-9999);
-                }
-                else{
+                else
                     setter.accept(jsonObject.get(key).getAsInt());
-                }
-            }
+
         } catch (Exception e) {
             System.err.println(errorMessage);
         }
@@ -56,7 +54,7 @@ public class JsonDeserializerPrediccionDia implements JsonDeserializer<Prediccio
             if (jsonObject.has(key) && !jsonObject.get(key).isJsonNull()) {
                 VariableFranxa variableFranxa = jsonDeserializationContext.deserialize(jsonObject.get(key), VariableFranxa.class);
                 variableFranxa.setVariableMeteoroloxica(type);
-               setter.accept(variableFranxa);
+                setter.accept(variableFranxa);
             }
         } catch (Exception e) {
             System.err.println(errorMessage);

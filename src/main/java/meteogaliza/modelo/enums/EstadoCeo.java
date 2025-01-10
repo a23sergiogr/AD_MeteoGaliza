@@ -1,4 +1,5 @@
-package meteogaliza.enums;
+package meteogaliza.modelo.enums;
+
 
 public enum EstadoCeo implements EstadoUtils {
     DESPEXADO(101, "Despexado"),

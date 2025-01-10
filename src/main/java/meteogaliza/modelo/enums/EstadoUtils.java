@@ -1,4 +1,4 @@
-package meteogaliza.enums;
+package meteogaliza.modelo.enums;
 
 public interface EstadoUtils{
     int getCodigo();

@@ -1,4 +1,4 @@
-package meteogaliza.enums;
+package meteogaliza.modelo.enums;
 
 public enum VariableMeteoroloxica {
     CIELO("ceo"), LLUVIA("pchoiva"), TEMPERATURA_MAXIMA("tmaxFranxa"), TEMPERATURA_MINIMA("tminFranxa"), VIENTO("vento");

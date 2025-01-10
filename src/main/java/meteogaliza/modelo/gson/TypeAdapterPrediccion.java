@@ -1,16 +1,16 @@
-package meteogaliza.gson;
+package meteogaliza.modelo.gson;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import meteogaliza.Prediccion;
-import meteogaliza.PrediccionDia;
-import meteogaliza.VariableFranxa;
-import meteogaliza.enums.EstadoCeo;
-import meteogaliza.enums.EstadoUtils;
-import meteogaliza.enums.EstadoVento;
-import meteogaliza.enums.VariableMeteoroloxica;
+import meteogaliza.modelo.objetos.Prediccion;
+import meteogaliza.modelo.objetos.PrediccionDia;
+import meteogaliza.modelo.objetos.VariableFranxa;
+import meteogaliza.modelo.enums.EstadoCeo;
+import meteogaliza.modelo.enums.EstadoUtils;
+import meteogaliza.modelo.enums.EstadoVento;
+import meteogaliza.modelo.enums.VariableMeteoroloxica;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

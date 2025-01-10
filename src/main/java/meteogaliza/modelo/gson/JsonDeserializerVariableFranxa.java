@@ -1,10 +1,10 @@
-package meteogaliza.gson;
+package meteogaliza.modelo.gson;
 
 import com.google.gson.*;
-import meteogaliza.VariableFranxa;
-import meteogaliza.enums.EstadoCeo;
-import meteogaliza.enums.EstadoUtils;
-import meteogaliza.enums.EstadoVento;
+import meteogaliza.modelo.objetos.VariableFranxa;
+import meteogaliza.modelo.enums.EstadoCeo;
+import meteogaliza.modelo.enums.EstadoUtils;
+import meteogaliza.modelo.enums.EstadoVento;
 
 import java.lang.reflect.Type;
 

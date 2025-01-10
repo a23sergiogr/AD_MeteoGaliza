@@ -1,4 +1,4 @@
-package meteogaliza;
+package meteogaliza.modelo.objetos;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

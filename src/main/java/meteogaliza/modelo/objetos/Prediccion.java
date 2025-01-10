@@ -1,7 +1,7 @@
-package meteogaliza;
+package meteogaliza.modelo.objetos;
 
-import meteogaliza.enums.ConcelloId;
-import meteogaliza.enums.EstadoUtils;
+import meteogaliza.modelo.enums.ConcelloId;
+import meteogaliza.modelo.enums.EstadoUtils;
 
 import java.util.ArrayList;
 import java.util.List;

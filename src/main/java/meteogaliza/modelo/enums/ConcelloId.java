@@ -1,4 +1,5 @@
-package meteogaliza.enums;
+package meteogaliza.modelo.enums;
+
 
 public enum ConcelloId implements EstadoUtils {
     ABEGONDO(15001, "Abegondo"),
